@@ -42,26 +42,32 @@ def fat(data):
     n = 0
     for i in range(len(data)):
         if i%2==0:
-            files.append((n, l, l+data[i]))
+            files.append([n, l, l+data[i]])
             n += 1
         else:
-            emptys.append((l, l+data[i]))
+            emptys.append([l, l+data[i]])
         l += data[i]
     return files, emptys
 
+def t(files):
+    return sum(n*(s+e-1)*(e-s)//2 for n, s, e in files)
 def f2(files, emptys):
-    for i in reversed(range(len(files))):
-        n, s, e = files[i]
-        j = 0
-        l, r = emptys[0]
-        while not (j==len(emptys) or e-s<=r-l or s<l):
-            j += 1
-            l, r = emptys[j]
+    M = len(emptys)
+    i = len(files)-1
+    for _, s, e in reversed(files):
+        for j, (l, r) in enumerate(emptys):
+            if e-s<=r-l or s<l:
+                break
         if e-s<=r-l:
-            files[i] = (n, l, l+e-s)
-            emptys[j] = (l+e-s, r)
-    return sum(n*(sum(range(s, e))) for n, s, e in files)
+            files[i][1] = l
+            files[i][2] = l+e-s
+            emptys[j][0] = l+e-s
+        i -= 1
+    return t(files)
 
 assert f2(*fat("2333133121414131402"))==2858
+
+import cProfile
+cProfile.run('f2(*fat(data))')
 
 print(f2(*fat(data)))
