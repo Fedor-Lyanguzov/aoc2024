@@ -50,11 +50,7 @@ def fat(data):
     emptys = dict(enumerate(emptys))
     return files, emptys
 
-def t(files):
-    return sum(n*(s+e-1)*(e-s)//2 for n, s, e in files)
-
 def f2(files, emptys):
-    M = len(emptys)
     i = len(files)-1
     for _, s, e in reversed(files):
         for j, (l, r) in emptys.items():
@@ -67,9 +63,8 @@ def f2(files, emptys):
                 del emptys[j]
             else:
                 emptys[j][0] = l+e-s
-            
         i -= 1
-    return t(files)
+    return sum(n*(s+e-1)*(e-s)//2 for n, s, e in files)
 
 assert f2(*fat("2333133121414131402"))==2858
 
