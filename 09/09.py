@@ -47,21 +47,27 @@ def fat(data):
         else:
             emptys.append([l, l+data[i]])
         l += data[i]
+    emptys = dict(enumerate(emptys))
     return files, emptys
 
 def t(files):
     return sum(n*(s+e-1)*(e-s)//2 for n, s, e in files)
+
 def f2(files, emptys):
     M = len(emptys)
     i = len(files)-1
     for _, s, e in reversed(files):
-        for j, (l, r) in enumerate(emptys):
+        for j, (l, r) in emptys.items():
             if e-s<=r-l or s<l:
                 break
         if e-s<=r-l:
             files[i][1] = l
             files[i][2] = l+e-s
-            emptys[j][0] = l+e-s
+            if l+e-s==r:
+                del emptys[j]
+            else:
+                emptys[j][0] = l+e-s
+            
         i -= 1
     return t(files)
 
