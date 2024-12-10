@@ -39,4 +39,4 @@ d = '''
 d = [list(map(int, x)) for x in d]
 print(f1(d))
 
-print(f1(data, list))
+print(f1(data, iter))
