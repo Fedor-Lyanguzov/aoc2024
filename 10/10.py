@@ -6,7 +6,7 @@ data = [list(map(int, x)) for x in data]
 
 def make_bound(data):
     N = len(data)
-    M = len(data)
+    M = len(data[0])
     def bound(i, j):
         return 0<=i<N and 0<=j<M
     return bound
@@ -23,6 +23,7 @@ def f1(data, collect=set):
             yield from score(i+di, j+dj, x+1)
     zeroes = [(i, j) for i, l in enumerate(data) for j, x in enumerate(l) if x==0]
     bound = make_bound(data)
+    
     d = [(1,0), (0,1), (-1,0), (0,-1)]
     return sum(1 for z in zeroes for _ in collect(score(*z)))
 print(f1(data))
